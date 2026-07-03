@@ -56,7 +56,7 @@ app.post("/write", (req, res) => {
   console.log(req.body);
 
   const { title, name, content } = req.body;
-  const sqlQuery = "insert into board (title, content, writer) values (?, ?, ?);";
+  const sqlQuery = "INSERT INTO board (title, content, writer) VALUES (?, ?, ?);";
 
   db.query(sqlQuery, [title, content, name], (err, result) => {
     if (err) throw err;
