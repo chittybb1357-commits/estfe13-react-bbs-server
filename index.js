@@ -5,7 +5,7 @@ const mysql = require("mysql2");
 const port = 3000;
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: true })); // json -> object
+app.use(express.urlencoded({ extended: true })); // html form -> object
 
 let corsOptions = {
   origin: "*",
