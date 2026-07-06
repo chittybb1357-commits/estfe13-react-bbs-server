@@ -41,24 +41,19 @@ app.get("/", (req, res) => {
 app.get("/list", (req, res) => {
   const sqlQuery =
     "SELECT id, title, content, writer, DATE_FORMAT(date, '%Y-%m-%d') AS date FROM board;";
-
   db.query(sqlQuery, (err, result) => {
     if (err) throw err;
-
     res.send(result);
   });
 });
 app.get("/view", (req, res) => {
   console.log(req.query.id);
-
   const id = req.query.id;
   // const sqlQuery = `SELECT * FROM board WHERE id=${req.query.id};`;
   const sqlQuery =
     "SELECT title, content, writer, DATE_FORMAT(date, '%Y-%m-%d') AS date FROM board WHERE id=?;";
-
   db.query(sqlQuery, [id], (err, result) => {
     if (err) throw err;
-
     res.send(result);
   });
 });
@@ -66,8 +61,8 @@ app.post("/write", upload.single("image"), (req, res) => {
   console.log(req.body);
 
   const { title, writer, content } = req.body;
-  const imagePath = req.file ? req.file.path : null; // req.file.path는 업로드된 파일의 경로
-  const sqlQuery = "INSERT INTO board (title, content, writer, image_path) VALUES (?, ?, ?, ?);";
+  const imagePath = req.file ? req.file.path : null; //req.file.path는 업로드된 파일의 경로
+  const sqlQuery = "insert into board (title,content,writer,image_path) values (?,?,?,?);";
 
   db.query(sqlQuery, [title, content, writer, imagePath], (err, result) => {
     if (err) throw err;
@@ -77,37 +72,31 @@ app.post("/write", upload.single("image"), (req, res) => {
 });
 app.post("/delete", (req, res) => {
   console.log(req.body);
-
   const { id } = req.body;
-  const sqlQuery = "DELETE FROM board WHERE id=?";
 
+  const sqlQuery = "DELETE FROM board WHERE id=?";
   db.query(sqlQuery, [id], (err, result) => {
     if (err) throw err;
-
     res.send(result);
   });
 });
 app.post("/deleteselect", (req, res) => {
   console.log(req.body);
-
   const { boardIdList } = req.body;
-  const sqlQuery = `delete from board where id in (${boardIdList})`;
 
+  const sqlQuery = `delete from board where id in (${boardIdList})`;
   db.query(sqlQuery, (err, result) => {
     if (err) throw err;
-
     res.send(result);
   });
 });
 app.post("/update", (req, res) => {
   console.log(req.body);
-
   const { name, title, content, id } = req.body;
-  const sqlQuery = "UPDATE board SET writer=?, title=?, content=? WHERE id=?;";
 
+  const sqlQuery = "UPDATE board SET writer=?, title=?, content=? WHERE id=?";
   db.query(sqlQuery, [name, title, content, id], (err, result) => {
     if (err) throw err;
-
     res.send(result);
   });
 });
