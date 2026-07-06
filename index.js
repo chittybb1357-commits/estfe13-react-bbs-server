@@ -20,9 +20,11 @@ const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "uploads/");
   },
+
   filename: function (req, file, cb) {
     const orinalExt = file.originalname.split(".")[1];
     const uniquePrefix = Date.now() + "-" + Math.round(Math.random() * 1000);
+
     cb(null, uniquePrefix + "-" + file.fieldname + "." + orinalExt);
   },
 });
@@ -100,11 +102,11 @@ app.post("/deleteselect", (req, res) => {
     res.send(result);
   });
 });
-app.post("/update", (req, res) => {
+app.post("/update", upload.single("image"), (req, res) => {
   console.log(req.body);
 
   const { writer, title, content, id, remove_image } = req.body;
-  const imagePath = req.file ? req.file.path : null; //새이미지 정보 할당
+  const imagePath = req.file ? req.file.path : null; // 새 이미지 정보 할당
   const shouldRemoveImage = remove_image === "1";
 
   let sqlQuery;
