@@ -33,7 +33,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 const db = mysql.createConnection({
   host: "localhost",
-  user: "root",
+  user: "user_bbs",
   password: "djsdbqmffpsej1",
   database: "bbs",
 });
@@ -83,7 +83,7 @@ app.post("/write", upload.single("image"), (req, res) => {
   console.log(req.body);
 
   const { title, writer, content } = req.body;
-  const imagePath = req.file ? req.file.path : null; //req.file.path는 업로드된 파일의 경로
+  const imagePath = req.file ? `/uploads/${req.file.filename}` : null; //req.file.path는 업로드된 파일의 경로
   const sqlQuery = "insert into board (title,content,writer,image_path) values (?,?,?,?);";
 
   db.query(sqlQuery, [title, content, writer, imagePath], (err, result) => {
@@ -142,7 +142,7 @@ app.post("/update", upload.single("image"), (req, res) => {
   console.log(req.body);
 
   const { writer, title, content, id, remove_image } = req.body;
-  const imagePath = req.file ? req.file.path : null; // 새 이미지 정보 할당
+  const imagePath = req.file ? `/uploads/${req.file.filename}` : null; // 새 이미지 정보 할당
   const shouldRemoveImage = remove_image === "1";
 
   let sqlQuery;
